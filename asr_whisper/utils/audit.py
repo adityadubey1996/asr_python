@@ -8,6 +8,7 @@ client = Groq(
 
 
 def audit_transcript(transcript):
+    print('before audit_transcript')
     chat_completion = client.chat.completions.create(
         messages=[
             {
@@ -17,6 +18,7 @@ def audit_transcript(transcript):
         ],
         model="mixtral-8x7b-32768",
     )
+    print('after audit_transcript')
 
     # print(chat_completion.choices[0].message.content)
     return chat_completion.choices[0].message.content
