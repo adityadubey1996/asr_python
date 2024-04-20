@@ -1,2 +1,3 @@
-asr_python_venv
+asr_python
 node_modules
+.DS_Store
