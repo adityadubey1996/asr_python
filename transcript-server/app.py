@@ -15,7 +15,7 @@ def download_uploaded_file(filename):
 
 @socketio.on('connect')
 def test_connect():
-    print('Client connected')
+    print('Client connected from outside asr_whisper')
     emit('connect_ack', {'message': 'Connected successfully'})
 
 @socketio.on('start_upload')
