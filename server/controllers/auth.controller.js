@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 
 const googleLogin = async (req, res) => {
   const { tokenId } = req.body;
+  let token;
   const googleResponse = await client.verifyIdToken({
     idToken: tokenId,
     audience: process.env.GOOGLE_CLIENT_ID,
@@ -18,18 +19,20 @@ const googleLogin = async (req, res) => {
   try {
     let user = await db.users.findOne({ where: { email: email } });
     if (user) {
-      await user.update({ access_token: tokenId });
+      token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+      await user.update({ access_token: token });
       return res.status(200).json({
         code: "OLD",
         data: user,
       });
     }
-    const newUser = await db.users.create({
+    let newUser = await db.users.create({
       name: name,
       email: email,
       profile_picture: picture,
-      access_token: tokenId,
     });
+    token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET);
+    await newUser.update({access_token : token},{where : { id : newUser.id}})
     return res.status(200).json({
       code: "NEW",
       data: newUser,
