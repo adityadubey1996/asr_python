@@ -37,7 +37,9 @@ db.users.hasMany(db.transcriptions);
 db.transcriptions.belongsTo(db.users);
 
 db.users.hasMany(db.userMetrics);
-db.userMetrics.belongsTo(db.users);
+db.userMetrics.belongsTo(db.users, {foreignKey: 'userId',
+as: 'user'
+});
 
 db.metrics.hasMany(db.userMetrics);
 db.userMetrics.belongsTo(db.metrics);
