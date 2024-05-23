@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'Users', // This is the table name
+                model: 'users', // This is the table name
                 key: 'id', // This is the column name of the primary key in the Users table
             }
         },

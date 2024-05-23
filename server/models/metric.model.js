@@ -13,16 +13,16 @@ module.exports = (sequelize, Datatypes) => {
             type: Datatypes.TEXT
         },
         createdAt: {
-            allowNull: false,
             type: Datatypes.DATE,
-            defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+            defaultValue: Datatypes.NOW,
           },
           updatedAt: {
-            allowNull: false,
             type: Datatypes.DATE,
-            defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
-          }
-    });
+            defaultValue: Datatypes.NOW,
+            onUpdate: Datatypes.NOW,
+          },
+    },{  timestamps: true, // This automatically adds createdAt and updatedAt fields
+});
     return Metric;
     };
     
