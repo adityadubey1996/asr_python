@@ -4,15 +4,28 @@ const  db  = require('../models');
 const router = express.Router();
 
 // Fetch all metrics (questions)
-router.get('/questions', async (req, res) => {
+// router.get('/questions', async (req, res) => {
+//   try {
+//     const questions = await db.metrics.findAll();
+//     res.status(200).json(questions);
+//   } catch (error) {
+//     console.error('Failed to fetch questions:', error);
+//     res.status(500).json({ message: 'Error fetching questions from database' });
+//   }
+// });
+
+router.get('/userMetrics/:userId', async (req, res) => {
   try {
-    const questions = await db.metrics.findAll();
-    res.status(200).json(questions);
+      const userMetrics = await UserMetric.findAll({
+          where: { userId: req.params.userId }
+      });
+      res.json(userMetrics);
   } catch (error) {
-    console.error('Failed to fetch questions:', error);
-    res.status(500).json({ message: 'Error fetching questions from database' });
+      res.status(500).send(error.message);
   }
 });
+
+
 
 // Save user answers
 router.post('/answers/:userId', async (req, res) => {
