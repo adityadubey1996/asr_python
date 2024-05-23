@@ -4,6 +4,7 @@ const express = require('express')
 const db = require('./models')
 const morgan = require('morgan')
 const authController = require('./controllers/auth.controller')
+const metricsRoutes = require('./controllers/metric.controller')
 const cookieParser = require('cookie-parser')
 const app = express()
 
@@ -22,6 +23,8 @@ app.use(morgan('dev'))
 app.post('/api/google-login',authController.googleLogin)
 app.post('/api/signup',authController.signUp)
 app.post('/api/signin',authController.signIn)
+app.use('/api/metric', metricsRoutes)
+
 
 
 
