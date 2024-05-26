@@ -21,7 +21,7 @@ module.exports = (sequelize, Datatypes) => {
             defaultValue: Datatypes.NOW,
             onUpdate: Datatypes.NOW,
           },
-    },{  timestamps: true, // This automatically adds createdAt and updatedAt fields
+    },{  timestamps: true,
 });
     return Metric;
     };

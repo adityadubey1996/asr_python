@@ -22,7 +22,7 @@ const getAllFiles = async (req, res) => {
     try {
       const files = await db.audioFiles.findAll({
         where: { userId: id },
-        order: [['createdAt', 'DESC']]  // Assuming 'createdAt' is the column name for the timestamp
+        order: [['createdAt', 'DESC']] 
       });
       return res.status(200).json(files);
     } catch (error) {
