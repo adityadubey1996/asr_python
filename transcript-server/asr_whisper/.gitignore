@@ -1,3 +1,7 @@
 asr_python
 node_modules
 .DS_Store
+.env
+asr-python-421913-dd1251ecfb30.json
+uploads/
+__pycache__

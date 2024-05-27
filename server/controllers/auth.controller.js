@@ -9,35 +9,64 @@ const jwt = require("jsonwebtoken");
 
 const googleLogin = async (req, res) => {
   const { tokenId } = req.body;
-  const googleResponse = await client.verifyIdToken({
-    idToken: tokenId,
-    audience: process.env.GOOGLE_CLIENT_ID,
-  });
-  const { email_verified, name, email, given_name, family_name, picture } =
-    googleResponse.payload;
+  let token;
+
   try {
+    const googleResponse = await client.verifyIdToken({
+      idToken: tokenId,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const { email_verified, name, email, picture } = googleResponse.payload;
+
+    if (!email_verified) {
+      return res.status(400).json({ message: 'Email not verified' });
+    }
+
     let user = await db.users.findOne({ where: { email: email } });
+
     if (user) {
-      await user.update({ access_token: tokenId });
+      token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { algorithm: 'HS256' });
+      await user.update({ access_token: token });
+
+      const userMetrics = await db.userMetrics.findOne({ where: { userId: user.id } });
+      const metricsExist = !!userMetrics; 
+
       return res.status(200).json({
-        code: "OLD",
+        code: 'OLD',
         data: user,
+        metricsExist: metricsExist,
       });
     }
-    const newUser = await db.users.create({
+
+    let newUser = await db.users.create({
       name: name,
       email: email,
       profile_picture: picture,
-      access_token: tokenId,
     });
+
+    token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { algorithm: 'HS256' });
+    await newUser.update({ access_token: token }, { where: { id: newUser.id } });
+
     return res.status(200).json({
-      code: "NEW",
+      code: 'NEW',
       data: newUser,
+      metricsExist: false,
     });
+
   } catch (error) {
-    catchError(res, error);
+    if (error.message.includes('No pem found for envelope')) {
+      console.error('Public key not found for JWT verification:', error);
+      return res.status(500).json({
+        code: 'INTERNAL ERROR',
+        message: 'Failed to verify token. Please try again later.',
+      });
+    }
+    console.error('An error occurred during Google login:', error);
+    return catchError(res, error);
   }
 };
+
 
 const signUp = async (req, res) => {
   try {
@@ -98,7 +127,7 @@ const signIn = async (req, res) => {
       data: `ENTERED CREDENTIALS NOT VALID`,
     });
   }
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET,{ algorithm: 'HS256' });
   await user.update(
     { access_token: token },
     {
@@ -107,10 +136,13 @@ const signIn = async (req, res) => {
       },
     }
   );
+  const userMetrics = await db.userMetrics.findOne({ where: { userId: user.id } });
+  const metricsExist = !!userMetrics;
   const { password: _, ...filteredUser } = user.toJSON();
   return res.status(200).json({
     code: "login sucess",
     data: filteredUser,
+    metricsExist: metricsExist,
   });
 };
 
