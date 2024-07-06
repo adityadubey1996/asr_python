@@ -31,11 +31,13 @@ const getUserMetrics = async (req, res) => {
 const createOrUpdateUserMetrics = async (req, res) => {
   const userId = req.user.id
   const answers  = req.body;
+  console.log('userId, answers', userId, answers)
   try {
     // Implement logic to save answers, perhaps updating or creating new entries in UserMetrics
     await db.userMetrics.create({ userId, customSettings : JSON.stringify(answers) });
     res.status(200).json({ message: "Answers saved successfully" });
   } catch (error) {
+    console.log('error', error)
     console.error("Failed to save answers:", error);
     res
       .status(500)

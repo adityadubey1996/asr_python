@@ -6,6 +6,10 @@ from langchain.chains.summarize import load_summarize_chain
 from langchain_groq import ChatGroq
 from langchain.docstore.document import Document
 
+
+
+
+
 class AuditTranscript:
     def __init__(self, groq_api_key, model_name="mixtral-8x7b-32768", temperature=0):
         self.llm = ChatGroq(temperature=temperature, groq_api_key=groq_api_key, model_name=model_name)

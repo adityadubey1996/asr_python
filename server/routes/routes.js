@@ -10,7 +10,7 @@ router.post('/metrics/user-metrics',userMetricsController.createOrUpdateUserMetr
 
 router.post('/audio-file',activityController.createFileEntry)
 router.get('/audio-files',activityController.getAllFiles)
-router.patch('/audio-file',activityController.updateFile)
+router.post('/update-audio-file',activityController.updateFile)
 
 
 module.exports = router

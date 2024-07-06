@@ -26,11 +26,23 @@ const getAllFiles = async (req, res) => {
       });
       return res.status(200).json(files);
     } catch (error) {
+      console.log('error', error)
       catchError(res, error);
     }
   };
+//TODO: connect websocket server to this server
+const getFileByIdForWebsocket = async (req,res) => {
+  const {fileId, userId} = req
+  try{
+
+  }
+  catch(error){
+
+  }
+}
   
 const updateFile = async (req, res) => {
+  console.log('from updateFile')
   const { fileId, fileUrl ,status } = req.body;
   const id = req.user.id;
   try {
@@ -38,9 +50,10 @@ const updateFile = async (req, res) => {
       { fileUrl,status},
       { where: { userId: id, fileId } }
     );
-   await delay(3000);
+  //  await delay(3000);
    return res.status(200).json({}) 
   } catch (error) {
+    console.log('error from updateFIle', error)
     catchError(res,error)
   }
 };

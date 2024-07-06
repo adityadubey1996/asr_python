@@ -12,8 +12,11 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.ENUM('uploaded', 'processing', 'completed', 'failed'),
         defaultValue: 'uploaded'
+      },
+      transcriptionStatus: {
+        type : DataTypes.ENUM('failed', 'processing', 'completed', 'not_started'),
+        default : 'not_started',
       }
     });
-  
     return AudioFile;
   };

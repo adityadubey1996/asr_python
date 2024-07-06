@@ -2,13 +2,14 @@ const { OAuth2Client } = require("google-auth-library");
 const db = require("../models/index");
 const { Op } = require("sequelize");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const constants = require("../utils/constants");
 const { catchError } = require("../utils/catchBlock");
 const jwt = require("jsonwebtoken");
 
 const googleLogin = async (req, res) => {
   const { tokenId } = req.body;
+  console.log('tokenId', tokenId)
   let token;
 
   try {

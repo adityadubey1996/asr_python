@@ -1,24 +1,49 @@
-require('dotenv').config()
+
+
+require('dotenv').config({path : `${__dirname}/../.env`})
 const { Sequelize, DataTypes } = require('sequelize');
+const fs = require('fs')
+let dbConfig =   {
+  host: process.env.DB_HOST,  // Database host
+  port: process.env.DB_PORT,  // Database port
+  dialect: 'mysql',  // Using MySQL
+  pool: { 
+    max: 5,  // Maximum number of connection in pool
+    min: 0,  // Minimum number of connection in pool
+    idle: 10000  // The maximum time, in milliseconds, that a connection can be idle before being released
+  },
+  benchmark: false,  // Set to `true` if you want to output the execution time
+  logging: false  // Set to `true` to log SQL queries, or pass a function to log in a custom way
+}
 
-
+if(process.env.ENVIRONMENT === 'PROD'){
+  dbConfig.ssl={
+    sslmode: 'verify-full',
+    ca: fs.readFileSync(process.env.DB_ROOT_CERT), // e.g., '/path/to/my/server-ca.pem'
+    key: fs.readFileSync(process.env.DB_KEY), // e.g. '/path/to/my/client-key.pem'
+    cert: fs.readFileSync(process.env.DB_CERT), // e.g. '/path/to/my/client-cert.pem'
+  }
+}
 
 const sequelize = new Sequelize(
-    process.env.DB_DATABASE,
-    process.env.DB_USERNAME,
-    process.env.DB_PASSWORD,
-    {
-      host: process.env.DB_HOST,
-      port: process.env.DB_PORT,
-      dialect: 'mysql',
-      pool: { max: 5, min: 0, idle: 10000 },
-      benchmark: false, 
-    }
-  );
+  process.env.DB_NAME,   // Database name
+  process.env.DB_USER,   // Username
+  process.env.DB_PASSWORD,  // Password
+  dbConfig
+);
+
 
 const  db={}
 db.Sequelize = Sequelize
 db.sequelize = sequelize
+
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
 
 db.users = require('../models/user.model')(sequelize, DataTypes);
 db.audioFiles = require('../models/audio.model')(sequelize, DataTypes);
