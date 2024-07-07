@@ -17,12 +17,12 @@ let dbConfig =   {
 }
 
 if(process.env.ENVIRONMENT === 'PROD'){
-  dbConfig.ssl={
-    sslmode: 'verify-full',
-    ca: fs.readFileSync(process.env.DB_ROOT_CERT), // e.g., '/path/to/my/server-ca.pem'
-    key: fs.readFileSync(process.env.DB_KEY), // e.g. '/path/to/my/client-key.pem'
-    cert: fs.readFileSync(process.env.DB_CERT), // e.g. '/path/to/my/client-cert.pem'
-  }
+  // dbConfig.ssl={
+  //   sslmode: 'verify-full',
+  //   ca: fs.readFileSync(process.env.DB_ROOT_CERT), // e.g., '/path/to/my/server-ca.pem'
+  //   key: fs.readFileSync(process.env.DB_KEY), // e.g. '/path/to/my/client-key.pem'
+  //   cert: fs.readFileSync(process.env.DB_CERT), // e.g. '/path/to/my/client-cert.pem'
+  // }
 }
 
 const sequelize = new Sequelize(
