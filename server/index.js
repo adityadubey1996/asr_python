@@ -7,6 +7,7 @@ const authController = require('./controllers/auth.controller')
 const cookieParser = require('cookie-parser')
 const { verifyUser } = require('./middlewares/auth')
 const app = express()
+const { updateCorsIfNecessary } = require('./updateCors'); 
 app.use(cookieParser());
 console.log('testing console logansfkndsakfnkdsnfkdsfnjdsnfjndsnf')
 console.log('process env', process.env)
@@ -56,7 +57,7 @@ function isDevelopmentMode() {
 db.sequelize.sync()
 app.use(cors(getCorsSettings()));
 const allowedOrigins = ['http://localhost:3000'];
-
+updateCorsIfNecessary().catch(console.error);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(cors({

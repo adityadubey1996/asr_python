@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         customSettings: {
             type: DataTypes.JSON,
             allowNull: false
+        },
+        workflowTitle: {
+            type: DataTypes.STRING,
+            allowNull: false // Make sure this aligns with your DB schema and migration
         }
     });
 
