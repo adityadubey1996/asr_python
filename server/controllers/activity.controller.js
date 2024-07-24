@@ -1,6 +1,6 @@
 const db = require("../models");
 const { catchError } = require("../utils/catchBlock");
-const { delay } = require("../utils/functions");
+const StorageSingleton  = require('../utils/strageClass')
 
   // Validation function to check required fields
   const validateFields = (fileUrl ,  status ,userMetricId) => {
@@ -53,33 +53,35 @@ const getAllFiles = async (req, res) => {
       catchError(res, error);
     }
   };
-//TODO: connect websocket server to this server
-const getFileByIdForWebsocket = async (req,res) => {
-  const {fileId, userId} = req
-  try{
 
-  }
-  catch(error){
 
-  }
-}
-  
+
 const updateFile = async (req, res) => {
-  console.log('from updateFile')
-  const { fileId, fileUrl ,status } = req.body;
+  const { fileId, fileUrl, status } = req.body;
   const id = req.user.id;
   try {
-    await db.audioFiles.update(
-      { fileUrl,status},
+    const [updated] = await db.audioFiles.update(
+      { fileUrl, status },
       { where: { userId: id, fileId } }
     );
-  //  await delay(3000);
-   return res.status(200).json({}) 
+
+    if (updated) {
+      const updatedFile = await db.audioFiles.findOne({ where: { userId: id, fileId } });
+      if (updatedFile) {
+        return res.status(200).json(updatedFile);  // Return the updated file details to the client
+      } else {
+        return res.status(404).json({ error: 'No file found with the specified ID.' });
+      }
+    } else {
+      return res.status(404).json({ error: 'File update failed or no changes were made.' });
+    }
   } catch (error) {
-    console.log('error from updateFIle', error)
-    catchError(res,error)
+    console.log('Error from updateFile', error);
+    catchError(res, error);
   }
 };
+
+
 
 const deleteFile = async(req, res) => {
   const {id :fileId} = req.params
@@ -102,6 +104,13 @@ const deleteFile = async(req, res) => {
       return res.status(404).json({ message: 'File not found' });
   }
 
+   // If the file has a URL pointing to a bucket, delete it from the bucket
+   if (fileToBeDeleted.fileUrl) {
+    const bucket = StorageSingleton.getBucket();
+    const fileName = extractFileName(fileToBeDeleted.fileUrl); // Helper function to extract file name from URL
+    await bucket.file(fileName).delete();
+  }
+
   // If the file exists, delete it
   await fileToBeDeleted.destroy();
 
@@ -114,9 +123,15 @@ const deleteFile = async(req, res) => {
   }
 }
 
+const extractFileName = (url) => {
+  const fileNameWithPrefix = url.substring(url.lastIndexOf('/') + 1); // Get the part of the URL after the last '/'
+  const fileName = fileNameWithPrefix.substring(fileNameWithPrefix.lastIndexOf('_') + 1); // Extract the part after the last '_'
+  return fileName;
+}
+
 module.exports = {
   createFileEntry,
   getAllFiles,
   updateFile,
-  deleteFile
+  deleteFile,
 };

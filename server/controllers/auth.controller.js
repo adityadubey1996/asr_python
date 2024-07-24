@@ -3,7 +3,7 @@ const db = require("../models/index");
 const { Op } = require("sequelize");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const bcrypt = require("bcryptjs");
-const constants = require("../utils/constants");
+const {constants} = require("../utils/constants");
 const { catchError } = require("../utils/catchBlock");
 const jwt = require("jsonwebtoken");
 

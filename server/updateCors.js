@@ -1,4 +1,5 @@
 const StorageSingleton = require('./utils/strageClass')
+const {allowlist} = require('./utils/constants')
 
 
 
@@ -11,29 +12,23 @@ async function updateCorsIfNecessary() {
   try {
     // Get the current CORS configuration
     const [metadata] = await bucket.getMetadata();
-    const corsConfiguration = metadata.cors;
-    console.log('Current CORS settings:', corsConfiguration);
-    // Check if the specified origin is already in the CORS configuration
-    const isOriginAllowed = corsConfiguration.some(config =>
-      config.origin.includes(originToCheck) && config.method.includes(method)
+    const existingCorsConfigs = metadata.cors || [];
+        console.log('Current CORS settings:', existingCorsConfigs);
+
+       // Check if all allowlist origins are already included
+       const allOriginsAllowed = allowlist.every(origin => 
+        existingCorsConfigs.some(config => config.origin.includes(origin))
     );
-
-    if (!isOriginAllowed) {
-      // Add the new origin to the CORS configuration
-      const newCorsConfig = corsConfiguration;
-      newCorsConfig.push({
-        maxAgeSeconds: maxAgeSeconds,
-        method: [method],
-        origin: [originToCheck],
-        responseHeader: [responseHeader],
-      });
-
-      // Update the bucket with the new CORS settings
-      await bucket.setCorsConfiguration(newCorsConfig);
-      console.log(`Updated CORS settings to include ${originToCheck}`);
-    } else {
-      console.log(`${originToCheck} is already allowed in CORS settings.`);
-    }
+    await  bucket.setCorsConfiguration([
+        {
+          origin: ['http://localhost:3000', 'https://yourproductiondomain.com'],
+          method: ['PUT', 'GET', 'POST', 'OPTIONS'],
+          responseHeader: ['Content-Type'],
+          maxAgeSeconds: 3600
+        },
+      ]);
+    
+      console.log(`Bucket  CORS configuration updated.`);
   } catch (error) {
     console.error('Error updating CORS settings:', error);
   }
