@@ -29,7 +29,7 @@ const createFileEntry = async (req, res) => {
     return res.status(400).json({ errors });
   }
     const newFile = await db.audioFiles.create({
-      fileUrl: fileUrl ? fileUrl : "NA",
+      fileUrl: fileUrl ? fileUrl : 'NA',
       status,
       userId: id,
       userMetricId : userMetricId,
@@ -105,7 +105,7 @@ const deleteFile = async(req, res) => {
   }
 
    // If the file has a URL pointing to a bucket, delete it from the bucket
-   if (fileToBeDeleted.fileUrl) {
+   if (fileToBeDeleted.fileUrl && fileToBeDeleted.fileUrl != 'NA') {
     const bucket = StorageSingleton.getBucket();
     const fileName = extractFileName(fileToBeDeleted.fileUrl); // Helper function to extract file name from URL
     await bucket.file(fileName).delete();
