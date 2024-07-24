@@ -4,16 +4,20 @@ const express = require('express')
 const db = require('./models')
 const morgan = require('morgan')
 const authController = require('./controllers/auth.controller')
+const emailController = require('./controllers/email.controller')
+
 const cookieParser = require('cookie-parser')
 const { verifyUser } = require('./middlewares/auth')
 const app = express()
+const { updateCorsIfNecessary } = require('./updateCors'); 
+const {allowlist} = require('./utils/constants')
 app.use(cookieParser());
 console.log('testing console logansfkndsakfnkdsnfkdsfnjdsnfjndsnf')
 console.log('process env', process.env)
 const PORT = process.env.PORT || 8000
 
 
-const allowlist = ['http://localhost:3000', 'http://example1.com', 'http://example2.com']; // add more domains as needed
+// const allowlist = ['http://localhost:3000', 'http://example1.com', 'http://example2.com']; // add more domains as needed
 
 
 const getCorsSettings = () => {
@@ -56,7 +60,7 @@ function isDevelopmentMode() {
 db.sequelize.sync()
 app.use(cors(getCorsSettings()));
 const allowedOrigins = ['http://localhost:3000'];
-
+updateCorsIfNecessary().catch(console.error);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(cors({
@@ -102,6 +106,7 @@ app.get('/', (req, res) => {
 app.post('/api/google-login',authController.googleLogin)
 app.post('/api/signup',authController.signUp)
 app.post('/api/signin',authController.signIn)
+app.get('/  verify-email',  emailController.verifyEmailToken)
 app.use('/api', verifyUser, require('./routes/routes'))
 
 

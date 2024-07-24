@@ -55,8 +55,7 @@ db.userSubscriptions = require('../models/user_subscription.model')(sequelize, D
 db.feedback = require('../models/feedback.model')(sequelize, DataTypes);
 
 // Define relationships
-db.users.hasMany(db.audioFiles);
-db.audioFiles.belongsTo(db.users);
+
 
 db.users.hasMany(db.transcriptions);
 db.transcriptions.belongsTo(db.users);
@@ -66,17 +65,16 @@ db.userMetrics.belongsTo(db.users, {foreignKey: 'userId',
 as: 'user'
 });
 
-db.metrics.hasMany(db.userMetrics);
-db.userMetrics.belongsTo(db.metrics);
+db.users.hasMany(db.audioFiles, { as: 'AudioFiles' });
+db.audioFiles.belongsTo(db.users, { foreignKey: 'userId', as: 'Uploader' });
 
-db.users.hasMany(db.userSubscriptions);
-db.userSubscriptions.belongsTo(db.users);
 
-db.subscriptionPlans.hasMany(db.userSubscriptions);
-db.userSubscriptions.belongsTo(db.subscriptionPlans);
 
-db.users.hasMany(db.feedback);
-db.feedback.belongsTo(db.users);
+
+
+
+
+
 
 
 

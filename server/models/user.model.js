@@ -19,6 +19,15 @@ module.exports = (sequelize, Datatypes) => {
       },
       profile_picture :{
         type : Datatypes.STRING
+      },
+      is_email_confirmed: {
+        type: Datatypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      email_confirmation_token: {
+        type: Datatypes.STRING,
+        allowNull: true
       }
     },
     {
