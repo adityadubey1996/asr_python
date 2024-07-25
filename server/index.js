@@ -34,20 +34,20 @@ const getCorsSettings = () => {
      *
      * Reference: https://expressjs.com/en/resources/middleware/cors.html#:~:text=for%20all%20routes.-,Configuring%20CORS%20Asynchronously,-var%20express%20%3D
      */
-    const corsOptionsDelegate = (req, callback) => {
-      const corsOptions = {};
-      corsOptions.origin = allowlist.indexOf(req.header('Origin')) !== -1;
-      callback(null, corsOptions);
-    };
+    // const corsOptionsDelegate = (req, callback) => {
+    //   const corsOptions = {};
+    //   corsOptions.origin = allowlist.indexOf(req.header('Origin')) !== -1;
+    //   callback(null, corsOptions);
+    // };
   
     // FE server will run on a different port in the development mode
-    if (isDevelopmentMode()) {
+    // if (isDevelopmentMode()) {
       return {
         methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH', 'OPTIONS'],
         credentials: true,
-        origin: 'http://localhost:3000',
+        origin: ['http://localhost:3000', 'http://35.239.201.94:3000'],
       };
-    }
+    // }
   
     return corsOptionsDelegate;
   };
