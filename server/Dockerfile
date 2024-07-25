@@ -23,7 +23,7 @@ RUN pnpm rebuild --store-dir /app/.pnpm-store
 COPY . .
 
 # Expose port 3000 to the outside once the container starts
-EXPOSE 3000
+EXPOSE 8000
 
 # Define environment variable from .env file for use in the application
 ENV NODE_ENV=production
