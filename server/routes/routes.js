@@ -22,5 +22,8 @@ router.get('/download-file/:fileId', bucketController.getFileByFileId)
 router.get('/generate-presigned-url',bucketController.downloadUrl )
 router.post('/send-verification',emailController.sendVerificationEmail)
 router.post('/verify',emailController.verifyEmailToken)
+router.get('/', (req, res) => {
+    res.status(200).send('<body>Welcome</body>');
+})
 
 module.exports = router
