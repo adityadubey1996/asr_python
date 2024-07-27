@@ -14,7 +14,7 @@ const EmailVerification = () => {
 
   const verifyToken = async () => {
     try {
-      const response = await axios.post(`${baseUrl()}/api/verify?token=${token}`);
+      const response = await axios.post(`${baseUrl()}/api/public/verify?token=${token}`);
     
       if (response.status === 200) {
         setStatus('success');

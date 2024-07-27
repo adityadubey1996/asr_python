@@ -18,7 +18,7 @@ const Google = () => {
   const onSuccessResponse = async (res) => {
     console.log('res from onSuccessResponse', res.tokenId)
     axios
-      .post(baseUrl() + "/api/google-login", { tokenId: res.tokenId })
+      .post(baseUrl() + "/api/public/google-login", { tokenId: res.tokenId })
       .then((res) => {
         dispatch(userLoginSuccess(res.data));
         localStorage.setItem("user", JSON.stringify(res.data));

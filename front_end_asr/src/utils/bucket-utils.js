@@ -6,7 +6,7 @@ import { baseUrl } from './url';
 export const getPresignedUrl = async (fileName, contentType) => {
     try {
         console.log('fileName contentType', contentType, fileName)
-        const response = await axios11.post(`${baseUrl()}/api/cloud-postsignedUrl`, {
+        const response = await axios11.post(`${baseUrl()}/api/auth/cloud-postsignedUrl`, {
          fileName, contentType 
         });
         return response.data.signedUrl;

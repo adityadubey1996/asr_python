@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 import { Divider, Box, Button, Paper, Modal } from "@mui/material";
 import UploadIcon from "@mui/icons-material/Upload";
-import {axiosInstance as axios,baseUrl, uploadFileToGCS, } from 'utils'
+import {axiosInstance as axios, baseUrl, uploadFileToGCS, } from 'utils'
 import UploadModal from './UploadModal'
 import VerificationModal from "components/confirmModal";
 import DeleteConfirmationModal from 'components/deleteConfirmModal'
@@ -30,7 +30,7 @@ const  [fileIdToBeDeleted,setFileIdToBeDeleted] = useState()
 const navigate = useNavigate();
   const deleteFileDueToProcessingError = async (fileId) => {
     try{
-    const res = await axios.delete(`${baseUrl()}/api/audio-files/${fileId}`);
+    const res = await axios.delete(`${baseUrl()}/api/auth/audio-files/${fileId}`);
     if (res.status === 200) {
     
   setFileList(currentFiles => currentFiles.filter(file => file.fileId !== fileId));
@@ -57,7 +57,7 @@ const navigate = useNavigate();
 
 
   const getFiles = async () => {
-    const res = await axios.get(`${baseUrl()}/api/audio-files`);
+    const res = await axios.get(`${baseUrl()}/api/auth/audio-files`);
     if (res.status === 200) {
     
       setFileList(res.data);
@@ -113,7 +113,7 @@ const resetProgress = (fileId) => {
     let fileId = null; // This will hold the ID of the file entry
     try {
         // Create an entry in the database with the initial status 'processing'
-        const initResponse = await axios.post(`${baseUrl()}/api/audio-file`, {
+        const initResponse = await axios.post(`${baseUrl()}/api/auth/audio-file`, {
             status: "processing",
             userMetricId: selectedMetric
         });
@@ -139,7 +139,7 @@ const resetProgress = (fileId) => {
 
           
                 // If the upload is successful, update the status in the database to 'uploaded'
-                const updateResponse = await axios.put(`${baseUrl()}/api//audio-files`, {
+                const updateResponse = await axios.put(`${baseUrl()}/api/auth/audio-files`, {
                     fileId: fileId,
                     fileUrl: uniqueFileName,
                     status: 'uploaded'

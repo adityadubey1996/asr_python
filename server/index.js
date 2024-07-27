@@ -40,11 +40,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'))
 
 
-app.post('/api/google-login',authController.googleLogin)
-app.post('/api/signup',authController.signUp)
-app.post('/api/signin',authController.signIn)
-app.get('/api/verify-email',  emailController.verifyEmailToken)
-app.use('/api', verifyUser, require('./routes/routes'))
+app.post('/api/public/google-login',authController.googleLogin)
+app.post('/api/public/signup',authController.signUp)
+app.post('/api/public/signin',authController.signIn)
+app.get('/api/public/verify-email',  emailController.verifyEmailToken)
+app.get('/api', (req, res) => {
+    res.status(200).send('<body>Welcome</body>');
+})
+app.use('/api/auth', verifyUser, require('./routes/routes'))
 
 
 

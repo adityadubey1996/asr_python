@@ -16,7 +16,7 @@ import  {axiosInstance as axios, baseUrl} from 'utils'
         throw new Error("Token not available");
       }
   try{
-      const response = await axios.get(`/api//userMetrics`);
+      const response = await axios.get(`/api/auth/userMetrics`);
   
       if (response.status === 200) {
         return response.data;
@@ -35,7 +35,7 @@ export const createMetric = createAsyncThunk(
   async ({ answers, title }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `/api/userMetrics`, 
+        `/api/auth/userMetrics`, 
         {customSettings :  answers, workflowTitle :title }
       );
       if (response.status == 200) {
@@ -60,7 +60,7 @@ export const getUserMetrics = createAsyncThunk(
     }
     console.log('inside getUserMetrics')
     try {
-    const response = await axios.get(`/api/userMetrics`);
+    const response = await axios.get(`/api/auth/userMetrics`);
    
       if (response.status === 200) {
         return response.data;

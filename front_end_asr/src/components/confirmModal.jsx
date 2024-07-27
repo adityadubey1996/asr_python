@@ -9,7 +9,7 @@ function VerificationModal({ onUploadClick, setOnUploadClick }) {
   const handleSendLink = async () => {
     setIsSending(true);
     try {
-        await axios.post('/api/send-verification', { email: '' });
+        await axios.post('/api/auth/send-verification', { email: '' });
         setIsSending(false);
         setIsSent(true);
         setTimeout(() => {

@@ -49,7 +49,7 @@ const SignUp = ({ setSignIn }) => {
 
   const handleSignUp = async () => {
     try {
-      const res = await axios.post("/api/signUp", formData);
+      const res = await axios.post("/api/public/signUp", formData);
       if (res.data) {
         setSignIn(true);
       }

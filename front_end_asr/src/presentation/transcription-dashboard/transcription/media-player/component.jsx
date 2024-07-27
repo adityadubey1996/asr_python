@@ -42,7 +42,7 @@ export const MediaPlayer = ({currentTime, setCurrentTime, isPlaying, setIsPlayin
             setIsLoading(true);
             try {
                 const fileName = 'McLaren P1_ The Widowmaker! _ Top Gear _ Series 21 _ BBC.mp4';
-                const result = await axios.get(`${baseUrl()}/api/generate-presigned-url`, {
+                const result = await axios.get(`${baseUrl()}/api/auth/generate-presigned-url`, {
                     params: { fileName } // Ensures proper encoding
                 });
                 console.log('result from fetchSignedUrl',result )

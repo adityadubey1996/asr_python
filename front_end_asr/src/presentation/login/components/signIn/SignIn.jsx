@@ -38,7 +38,7 @@ const SignUp = ({ setSignIn }) => {
 
   const handleSignIn = async () => {
     try {
-      const res = await axios.post(baseUrl() + "/api/signIn", formData);
+      const res = await axios.post(baseUrl() + "/api/public/signIn", formData);
       if (res.data) {
         dispatch(userLoginSuccess(res.data));
         localStorage.setItem("user", JSON.stringify(res.data));

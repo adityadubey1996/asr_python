@@ -17,7 +17,7 @@ export const MainContent = () => {
         try{
 
             const fileName = 'file.srt';
-            const result = await axios.get(`${baseUrl()}/api/generate-presigned-url`, {
+            const result = await axios.get(`${baseUrl()}/api/auth/generate-presigned-url`, {
                 params: { fileName } // Ensures proper encoding
             });
             console.log('result', result.data.signedUrl)
