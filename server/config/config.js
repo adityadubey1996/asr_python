@@ -20,7 +20,7 @@ module.exports = {
   production: {
     username: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || null,
-    database: 'database_production',
+    database: process.env.DB_NAME || 'asr_python',
     host: process.env.DB_HOST || '127.0.0.1',
     dialect: 'mysql',
     port: process.env.DB_PORT || 3306
