@@ -21,7 +21,7 @@ async function updateCorsIfNecessary() {
     );
     await  bucket.setCorsConfiguration([
         {
-          origin: ['http://localhost:3000', 'https://yourproductiondomain.com'],
+          origin: ['http://localhost:3000', 'https://voicequant.com'],
           method: ['PUT', 'GET', 'POST', 'OPTIONS'],
           responseHeader: ['Content-Type'],
           maxAgeSeconds: 3600

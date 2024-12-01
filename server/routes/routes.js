@@ -23,4 +23,5 @@ router.get('/generate-presigned-url',bucketController.downloadUrl )
 router.post('/send-verification',emailController.sendVerificationEmail)
 router.post('/verify',emailController.verifyEmailToken)
 
+
 module.exports = router

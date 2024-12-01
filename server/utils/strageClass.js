@@ -8,7 +8,7 @@ class StorageSingleton {
 
   static getInstance() {
     if (!StorageSingleton.instance) {
-      const keyFilenamePath = path.join(__dirname, '..', 'asr-python-421913-dd1251ecfb30.json');
+      const keyFilenamePath = path.join(__dirname, '..', 'asr-python-421913-e04fa3cfd98b.json');
       console.log('keyFilenamePath:', keyFilenamePath);
       const storage = new Storage({ keyFilename: keyFilenamePath });
       const bucket = storage.bucket('user_files_asr');
