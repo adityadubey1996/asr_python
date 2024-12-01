@@ -59,3 +59,19 @@ zipp==3.18.0
 moviepy
 groq
 git+https://github.com/openai/whisper.git
+
+# requests
+# moviepy
+# whisper
+# pysrt
+# mysql-connector-python
+fastapi
+uvicorn
+requests
+moviepy
+whisper
+pysrt
+mysql-connector-python
+langchain
+langchain-groq
+pydantic
